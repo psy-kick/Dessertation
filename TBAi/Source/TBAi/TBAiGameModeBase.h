@@ -9,18 +9,19 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class ETurnState : uint8
+{
+	StartTurn,
+	WaitTurn,
+	EndTurn
+};
 UCLASS()
 class TBAI_API ATBAiGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
-	UENUM(BlueprintType)
-	enum class ETurnState : uint8
-	{
-		StartTurn,
-		WaitTurn,
-		EndTurn
-	};
+
 	ATBAiGameModeBase();
 private:
 	UPROPERTY(EditAnywhere, Category="Tracker")
