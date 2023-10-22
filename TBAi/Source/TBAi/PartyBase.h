@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "UnitBase.h"
 #include "PartyBase.generated.h"
 
 UCLASS()
-class TBAI_API APartyBase : public ACharacter
+class TBAI_API APartyBase : public AUnitBase
 {
 	GENERATED_BODY()
 
