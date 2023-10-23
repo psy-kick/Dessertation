@@ -14,7 +14,14 @@ class TBAI_API APartyBase : public AUnitBase
 public:
 	// Sets default values for this character's properties
 	APartyBase();
-
+	int32 TotalPartyMp = 0;
+private:
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	int MP = 0;
+	TArray<AActor*> FoundActors;
+public:
+	UFUNCTION()
+	int CalculateTotalPartyMP();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -13,8 +13,10 @@ UENUM(BlueprintType)
 enum class ETurnState : uint8
 {
 	StartTurn,
-	WaitTurn,
-	EndTurn
+	PlayerTurn,
+	EnemyTurn,
+	Won,
+	Lost
 };
 UCLASS()
 class TBAI_API ATBAiGameModeBase : public AGameModeBase
@@ -23,14 +25,26 @@ class TBAI_API ATBAiGameModeBase : public AGameModeBase
 public:
 
 	ATBAiGameModeBase();
+//private variable
 private:
-	UPROPERTY(EditAnywhere, Category="Tracker")
+	UPROPERTY(EditAnywhere, Category = "Tracker")
 	ETurnState CurrentState;
+	UPROPERTY(VisibleAnywhere, Category = "Units")
+	class APartyBase* PartyBase;
+	class AEnemyBase* EnemyBase;
+//private functions
+private:
 	UFUNCTION()
 	void StartTurn();
+	UFUNCTION()
+	void PlayerTurn();
+	UFUNCTION()
+	void EnemyTurn();
 	UFUNCTION()
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
-
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };

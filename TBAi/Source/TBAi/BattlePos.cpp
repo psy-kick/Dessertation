@@ -17,7 +17,7 @@ void ABattlePos::BeginPlay()
 	Super::BeginPlay();
 	FVector location = GetActorLocation();
 	FRotator rotation = GetActorRotation();
-	//GetWorld()->SpawnActor<AUnitBase>(UnitRef, location, rotation);
+	GetWorld()->SpawnActor<AUnitBase>(UnitRef, location, rotation);
 }
 
 // Called every frame
