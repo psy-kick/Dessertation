@@ -76,7 +76,16 @@ void ATBAiGameModeBase::StartTurn()
 void ATBAiGameModeBase::PlayerTurn()
 {
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("PlayerTurn"));
-
+    UWorld* World = GetWorld();
+    if (World)
+    {
+        TArray<AActor*> FoundPartyActors;
+        UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
+        for (AActor* PartyActor : FoundPartyActors)
+        {
+            APartyBase* PartyInstance = Cast<APartyBase>(PartyActor);
+        }
+    }
 }
 
 void ATBAiGameModeBase::EnemyTurn()
