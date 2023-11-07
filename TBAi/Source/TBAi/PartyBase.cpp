@@ -9,6 +9,7 @@ APartyBase::APartyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	CurrentState = EPlayerState::SelectHero;
 }
 
 int APartyBase::CalculateTotalPartyMP()
@@ -29,10 +30,29 @@ int APartyBase::CalculateTotalPartyMP()
 	return TotalPartyMp;
 }
 
+void APartyBase::SelectHero()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		TArray<AActor*> FoundPartyActors;
+		UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
+		for (AActor* PartyActor : FoundPartyActors)
+		{
+			APartyBase* PartyInstance = Cast<APartyBase>(PartyActor);
+
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()
 {
 	Super::BeginPlay();
+	if (CurrentState == EPlayerState::SelectHero)
+	{
+		SelectHero();
+	}
 }
 
 // Called every frame

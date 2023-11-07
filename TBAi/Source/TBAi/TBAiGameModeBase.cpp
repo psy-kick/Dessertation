@@ -1,9 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
+#include "TBAiGameModeBase.h"
 #include "PartyBase.h"
 #include "EnemyBase.h"
-#include "TBAiGameModeBase.h"
 #include <Kismet/GameplayStatics.h>
 
 //constructor
@@ -18,7 +18,6 @@ void ATBAiGameModeBase::BeginPlay()
 }
 void ATBAiGameModeBase::StartTurn()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("StartTurn"));
 	if (CurrentState == ETurnState::StartTurn)
 	{
         UWorld* World = GetWorld();
