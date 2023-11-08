@@ -4,12 +4,15 @@
 #include "TBAiGameModeBase.h"
 #include "PartyBase.h"
 #include "EnemyBase.h"
+#include "SelectionPointer.h"
+#include "Blueprint/UserWidget.h"
 #include <Kismet/GameplayStatics.h>
 
 //constructor
 ATBAiGameModeBase::ATBAiGameModeBase()
 {
 	CurrentState = ETurnState::StartTurn;
+    PointerHUDClass = USelectionPointer::StaticClass();
 }
 void ATBAiGameModeBase::BeginPlay()
 {
@@ -80,9 +83,22 @@ void ATBAiGameModeBase::PlayerTurn()
     {
         TArray<AActor*> FoundPartyActors;
         UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
-        for (AActor* PartyActor : FoundPartyActors)
+        if (FoundPartyActors.Num() > 0)
         {
-            APartyBase* PartyInstance = Cast<APartyBase>(PartyActor);
+            // Generate a random index within the range of the array.
+            int32 RandomIndex = FMath::RandRange(0, FoundPartyActors.Num() - 1);
+
+            // Use the random index to access a random PartyBase instance.
+            APartyBase* RandomPartyInstance = Cast<APartyBase>(FoundPartyActors[RandomIndex]);
+
+            if (RandomPartyInstance)
+            {
+                if (PointerHUDClass)
+                {
+                    PointerHUD = CreateWidget<USelectionPointer>(World, PointerHUDClass);
+                    PointerHUD->AddToViewport();
+                }
+            }
         }
     }
 }

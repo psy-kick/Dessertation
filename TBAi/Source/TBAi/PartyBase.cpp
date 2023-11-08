@@ -3,6 +3,7 @@
 
 #include "PartyBase.h"
 #include <Kismet/GameplayStatics.h>
+#include "SelectionPointer.h"
 
 // Sets default values
 APartyBase::APartyBase()

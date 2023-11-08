@@ -6,8 +6,5 @@
 
 void USelectionPointer::SetPointer()
 {
-	if (PointerImage)
-	{
 
-	}
 }

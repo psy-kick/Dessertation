@@ -32,6 +32,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Units")
 	class APartyBase* PartyBase;
 	class AEnemyBase* EnemyBase;
+public:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class USelectionPointer> PointerHUDClass;
+	UPROPERTY()
+	class USelectionPointer* PointerHUD;
 //private functions
 private:
 	UFUNCTION()
