@@ -32,7 +32,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TArray<APartyBase*> PartyList;
 public:
-	UPROPERTY(VisibleAnywhere, Category = "Widgets")
+	UPROPERTY(EditAnywhere, Category = "Widgets")
 	UWidgetComponent* WidgetComponent;
 public:
 	UFUNCTION()
