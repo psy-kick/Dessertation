@@ -3,6 +3,7 @@
 
 #include "PartyBase.h"
 #include <Kismet/GameplayStatics.h>
+#include "Components/WidgetComponent.h"
 #include "SelectionPointer.h"
 
 // Sets default values
@@ -10,7 +11,8 @@ APartyBase::APartyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CurrentState = EPlayerState::SelectHero;
+	CurrentState = EPlayerStates::SelectHero;
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponents"));
 }
 
 int APartyBase::CalculateTotalPartyMP()
@@ -50,7 +52,7 @@ void APartyBase::SelectHero()
 void APartyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	if (CurrentState == EPlayerState::SelectHero)
+	if (CurrentState == EPlayerStates::SelectHero)
 	{
 		SelectHero();
 	}

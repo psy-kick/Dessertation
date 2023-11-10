@@ -12,7 +12,8 @@
 ATBAiGameModeBase::ATBAiGameModeBase()
 {
 	CurrentState = ETurnState::StartTurn;
-    PointerHUDClass = USelectionPointer::StaticClass();
+    UClass* SelectionPointerClass = LoadClass<USelectionPointer>(nullptr, TEXT("/Game/Blueprints/UI/Pointer_BP.Pointer_BP_C"));
+    PointerHUDClass = SelectionPointerClass;
 }
 void ATBAiGameModeBase::BeginPlay()
 {
@@ -77,7 +78,6 @@ void ATBAiGameModeBase::StartTurn()
 
 void ATBAiGameModeBase::PlayerTurn()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("PlayerTurn"));
     UWorld* World = GetWorld();
     if (World)
     {
@@ -96,7 +96,7 @@ void ATBAiGameModeBase::PlayerTurn()
                 if (PointerHUDClass)
                 {
                     PointerHUD = CreateWidget<USelectionPointer>(World, PointerHUDClass);
-                    PointerHUD->AddToViewport();
+                    RandomPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
                 }
             }
         }

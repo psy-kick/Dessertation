@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UnitBase.h"
+#include <Components/WidgetComponent.h>
 #include "PartyBase.generated.h"
 UENUM(BlueprintType)
-enum class EPlayerState : uint8
+enum class EPlayerStates : uint8
 {
 	SelectHero,
 	SelectEnemyOrAlly,
@@ -27,9 +28,12 @@ private:
 	int MP = 0;
 	TArray<AActor*> FoundActors;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
-	EPlayerState CurrentState;
+	EPlayerStates CurrentState;
 	UPROPERTY(EditAnywhere)
 	TArray<APartyBase*> PartyList;
+public:
+	UPROPERTY(VisibleAnywhere, Category = "Widgets")
+	UWidgetComponent* WidgetComponent;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
