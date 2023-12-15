@@ -32,6 +32,8 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Units")
 	class APartyBase* PartyBase;
 	class AEnemyBase* EnemyBase;
+	int32 SelectionIndex;
+	TArray<AActor*> FoundPartyActors;
 public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
@@ -43,6 +45,12 @@ private:
 	void StartTurn();
 	UFUNCTION()
 	void PlayerTurn();
+	UFUNCTION()
+	void MoveSelectedUp();
+	UFUNCTION()
+	void MoveSelectedDown();
+	UFUNCTION()
+	void UpdateSelection();
 	UFUNCTION()
 	void EnemyTurn();
 	UFUNCTION()

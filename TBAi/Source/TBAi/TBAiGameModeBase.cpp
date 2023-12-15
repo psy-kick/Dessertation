@@ -27,7 +27,6 @@ void ATBAiGameModeBase::StartTurn()
         UWorld* World = GetWorld();
         if (World)
         {
-            TArray<AActor*> FoundPartyActors;
             UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
 
             TArray<AActor*> FoundEnemyActors;
@@ -81,28 +80,47 @@ void ATBAiGameModeBase::PlayerTurn()
     UWorld* World = GetWorld();
     if (World)
     {
-        TArray<AActor*> FoundPartyActors;
         UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
         if (FoundPartyActors.Num() > 0)
         {
-            // Generate a random index within the range of the array.
-            int32 RandomIndex = FMath::RandRange(0, FoundPartyActors.Num() - 1);
-
-            // Use the random index to access a random PartyBase instance.
-            APartyBase* RandomPartyInstance = Cast<APartyBase>(FoundPartyActors[RandomIndex]);
-
-            if (RandomPartyInstance)
+            SelectionIndex = 0;
+            APartyBase* SelectedParty = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
+            if (SelectedParty)
             {
                 if (PointerHUDClass)
                 {
                     PointerHUD = CreateWidget<USelectionPointer>(World, PointerHUDClass);
-                    RandomPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
+                    SelectedParty->WidgetComponent->SetWidgetClass(PointerHUDClass);
+                }
+                APlayerController* PlayerController = UGameplayStatics::GetPlayerController(World, 0);
+                if (PlayerController)
+                {
+                    PlayerController->InputComponent->BindAction("MoveUp", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedUp);
+                    PlayerController->InputComponent->BindAction("MoveDown",IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedDown);
                 }
             }
         }
     }
 }
+void ATBAiGameModeBase::MoveSelectedUp()
+{
+    SelectionIndex = (SelectionIndex - 1 + FoundPartyActors.Num()) % FoundPartyActors.Num();
+    UpdateSelection();
+}
+void ATBAiGameModeBase::MoveSelectedDown()
+{
+    SelectionIndex = (SelectionIndex + 1) % FoundPartyActors.Num();
+    UpdateSelection();
+}
+void ATBAiGameModeBase::UpdateSelection()
+{
+    APartyBase* SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
 
+    if (SelectedPartyInstance)
+    {
+        SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
+    }
+}
 void ATBAiGameModeBase::EnemyTurn()
 {
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("EnemyTurn"));
