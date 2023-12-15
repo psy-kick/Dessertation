@@ -4,8 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "UnitBase.h"
+#include <Components/WidgetComponent.h>
 #include "PartyBase.generated.h"
-
+UENUM(BlueprintType)
+enum class EPlayerStates : uint8
+{
+	SelectHero,
+	SelectEnemyOrAlly,
+	Action,
+	FinishTurn
+};
 UCLASS()
 class TBAI_API APartyBase : public AUnitBase
 {
@@ -19,9 +27,18 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int MP = 0;
 	TArray<AActor*> FoundActors;
+	UPROPERTY(EditAnywhere, Category = "Tracker")
+	EPlayerStates CurrentState;
+	UPROPERTY(EditAnywhere)
+	TArray<APartyBase*> PartyList;
+public:
+	UPROPERTY(EditAnywhere, Category = "Widgets")
+	UWidgetComponent* WidgetComponent;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
+	UFUNCTION()
+	void SelectHero();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
