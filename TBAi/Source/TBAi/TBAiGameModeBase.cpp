@@ -18,7 +18,24 @@ ATBAiGameModeBase::ATBAiGameModeBase()
 void ATBAiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	StartTurn();
+    HandleStates(CurrentState);
+}
+void ATBAiGameModeBase::HandleStates(ETurnState NewState)
+{
+    switch (NewState)
+    {
+    case ETurnState::StartTurn:
+        StartTurn();
+        break;
+    case ETurnState::PlayerTurn:
+        PlayerTurn();
+        break;
+    case ETurnState::PlayerAttack:
+        PlayerAttack();
+        break;
+    default:
+        break;
+    }
 }
 void ATBAiGameModeBase::StartTurn()
 {
@@ -68,8 +85,6 @@ void ATBAiGameModeBase::StartTurn()
         }
         else
         {
-            // Handle the case when the world is not valid.
-            // You might want to log an error or take appropriate action here.
             UE_LOG(LogTemp, Error, TEXT("World is not valid."));
         }
 	}
@@ -101,7 +116,9 @@ void ATBAiGameModeBase::PlayerTurn()
             }
         }
     }
+    CurrentState = ETurnState::PlayerAttack;
 }
+#pragma region PlayerSelections
 void ATBAiGameModeBase::MoveSelectedUp()
 {
     SelectionIndex = (SelectionIndex - 1 + FoundPartyActors.Num()) % FoundPartyActors.Num();
@@ -114,12 +131,19 @@ void ATBAiGameModeBase::MoveSelectedDown()
 }
 void ATBAiGameModeBase::UpdateSelection()
 {
-    APartyBase* SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
+    SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
 
     if (SelectedPartyInstance)
     {
         SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
     }
+}
+#pragma endregion
+
+void ATBAiGameModeBase::PlayerAttack()
+{
+    SelectedPartyInstance->AttackEnemy();
+    GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("This attacked"));
 }
 void ATBAiGameModeBase::EnemyTurn()
 {

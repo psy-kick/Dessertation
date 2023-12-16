@@ -35,19 +35,12 @@ int APartyBase::CalculateTotalPartyMP()
 
 void APartyBase::SelectHero()
 {
-	UWorld* World = GetWorld();
-	if (World)
-	{
-		TArray<AActor*> FoundPartyActors;
-		UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
-		for (AActor* PartyActor : FoundPartyActors)
-		{
-			APartyBase* PartyInstance = Cast<APartyBase>(PartyActor);
-
-		}
-	}
+	
 }
-
+void APartyBase::AttackEnemy()
+{
+	UE_LOG(LogTemp, Error, TEXT("You have attacked an enemy"));
+}
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()
 {

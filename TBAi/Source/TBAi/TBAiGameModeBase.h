@@ -14,6 +14,7 @@ enum class ETurnState : uint8
 {
 	StartTurn,
 	PlayerTurn,
+	PlayerAttack,
 	EnemyTurn,
 	Won,
 	Lost
@@ -39,12 +40,17 @@ public:
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
 	UPROPERTY()
 	class USelectionPointer* PointerHUD;
+	APartyBase* SelectedPartyInstance;
 //private functions
 private:
+	UFUNCTION()
+	void HandleStates(ETurnState NewState);
 	UFUNCTION()
 	void StartTurn();
 	UFUNCTION()
 	void PlayerTurn();
+	UFUNCTION()
+	void PlayerAttack();
 	UFUNCTION()
 	void MoveSelectedUp();
 	UFUNCTION()
