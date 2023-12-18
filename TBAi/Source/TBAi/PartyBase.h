@@ -27,6 +27,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int MP = 0;
 	TArray<AActor*> FoundActors;
+	TArray<AActor*> FoundEnemies;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
 	EPlayerStates CurrentState;
 	UPROPERTY(EditAnywhere)

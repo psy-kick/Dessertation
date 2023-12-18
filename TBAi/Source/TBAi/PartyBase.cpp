@@ -4,6 +4,7 @@
 #include "PartyBase.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/WidgetComponent.h"
+#include "EnemyBase.h"
 #include "SelectionPointer.h"
 
 // Sets default values
@@ -39,7 +40,20 @@ void APartyBase::SelectHero()
 }
 void APartyBase::AttackEnemy()
 {
-	UE_LOG(LogTemp, Error, TEXT("You have attacked an enemy"));
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		UGameplayStatics::GetAllActorsOfClass(World, AEnemyBase::StaticClass(), FoundEnemies);
+		if (FoundEnemies.Num() > 0)
+		{
+			int32 RandomIndex = FMath::RandRange(0, FoundEnemies.Num() - 1);
+			AEnemyBase* RandomEnemy = Cast<AEnemyBase>(FoundEnemies[RandomIndex]);
+			if (RandomEnemy)
+			{
+				UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance killed the enemy %s"),*RandomEnemy->GetName());
+			}
+		}
+	}
 }
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()

@@ -56,7 +56,7 @@ private:
 	UFUNCTION()
 	void MoveSelectedDown();
 	UFUNCTION()
-	void UpdateSelection();
+	APartyBase* UpdateSelection();
 	UFUNCTION()
 	void EnemyTurn();
 	UFUNCTION()

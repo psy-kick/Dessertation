@@ -75,12 +75,12 @@ void ATBAiGameModeBase::StartTurn()
             if (TotalPartyMP > TotalEnemyMP)
             {
                 CurrentState = ETurnState::PlayerTurn;
-                PlayerTurn();
+                HandleStates(CurrentState);
             }
             else
             {
                 CurrentState = ETurnState::EnemyTurn;
-                EnemyTurn();
+                HandleStates(CurrentState);
             }
         }
         else
@@ -117,6 +117,7 @@ void ATBAiGameModeBase::PlayerTurn()
         }
     }
     CurrentState = ETurnState::PlayerAttack;
+    HandleStates(CurrentState);
 }
 #pragma region PlayerSelections
 void ATBAiGameModeBase::MoveSelectedUp()
@@ -129,7 +130,7 @@ void ATBAiGameModeBase::MoveSelectedDown()
     SelectionIndex = (SelectionIndex + 1) % FoundPartyActors.Num();
     UpdateSelection();
 }
-void ATBAiGameModeBase::UpdateSelection()
+APartyBase* ATBAiGameModeBase::UpdateSelection()
 {
     SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
 
@@ -137,13 +138,22 @@ void ATBAiGameModeBase::UpdateSelection()
     {
         SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
     }
+    return SelectedPartyInstance;
 }
 #pragma endregion
 
 void ATBAiGameModeBase::PlayerAttack()
 {
-    SelectedPartyInstance->AttackEnemy();
-    GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("This attacked"));
+    APartyBase* SelectedParty = UpdateSelection();
+    if (SelectedParty)
+    {
+        SelectedPartyInstance->AttackEnemy();
+    }
+    else
+    {
+        // Handle the case when SelectedPartyInstance is not valid.
+        GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Yellow, TEXT("SelectedPartyInstance is not valid."));
+    }
 }
 void ATBAiGameModeBase::EnemyTurn()
 {
