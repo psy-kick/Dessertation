@@ -4,6 +4,7 @@
 #include "PartyBase.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/WidgetComponent.h"
+#include "EnemyBase.h"
 #include "SelectionPointer.h"
 
 // Sets default values
@@ -35,19 +36,25 @@ int APartyBase::CalculateTotalPartyMP()
 
 void APartyBase::SelectHero()
 {
+	
+}
+void APartyBase::AttackEnemy()
+{
 	UWorld* World = GetWorld();
 	if (World)
 	{
-		TArray<AActor*> FoundPartyActors;
-		UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
-		for (AActor* PartyActor : FoundPartyActors)
+		UGameplayStatics::GetAllActorsOfClass(World, AEnemyBase::StaticClass(), FoundEnemies);
+		if (FoundEnemies.Num() > 0)
 		{
-			APartyBase* PartyInstance = Cast<APartyBase>(PartyActor);
-
+			int32 RandomIndex = FMath::RandRange(0, FoundEnemies.Num() - 1);
+			AEnemyBase* RandomEnemy = Cast<AEnemyBase>(FoundEnemies[RandomIndex]);
+			if (RandomEnemy)
+			{
+				UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance killed the enemy %s"),*RandomEnemy->GetName());
+			}
 		}
 	}
 }
-
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()
 {

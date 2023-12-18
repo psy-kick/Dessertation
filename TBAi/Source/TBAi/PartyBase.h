@@ -27,6 +27,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int MP = 0;
 	TArray<AActor*> FoundActors;
+	TArray<AActor*> FoundEnemies;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
 	EPlayerStates CurrentState;
 	UPROPERTY(EditAnywhere)
@@ -39,6 +40,8 @@ public:
 	int CalculateTotalPartyMP();
 	UFUNCTION()
 	void SelectHero();
+	UFUNCTION()
+	void AttackEnemy();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
