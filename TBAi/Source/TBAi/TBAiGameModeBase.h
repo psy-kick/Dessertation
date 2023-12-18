@@ -15,6 +15,7 @@ enum class ETurnState : uint8
 	StartTurn,
 	PlayerTurn,
 	PlayerAttack,
+	WaitTurn,
 	EnemyTurn,
 	Won,
 	Lost

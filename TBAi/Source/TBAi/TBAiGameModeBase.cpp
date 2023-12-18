@@ -33,6 +33,12 @@ void ATBAiGameModeBase::HandleStates(ETurnState NewState)
     case ETurnState::PlayerAttack:
         PlayerAttack();
         break;
+    case ETurnState::WaitTurn:
+        WaitTurn();
+        break;
+    case ETurnState::EnemyTurn:
+        EnemyTurn();
+        break;
     default:
         break;
     }
@@ -148,12 +154,14 @@ void ATBAiGameModeBase::PlayerAttack()
     if (SelectedParty)
     {
         SelectedPartyInstance->AttackEnemy();
+        CurrentState = ETurnState::WaitTurn;
     }
     else
     {
         // Handle the case when SelectedPartyInstance is not valid.
-        GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Yellow, TEXT("SelectedPartyInstance is not valid."));
+        UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance is not valid."));
     }
+    HandleStates(CurrentState);
 }
 void ATBAiGameModeBase::EnemyTurn()
 {
@@ -163,6 +171,8 @@ void ATBAiGameModeBase::EnemyTurn()
 void ATBAiGameModeBase::WaitTurn()
 {
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
+    CurrentState = ETurnState::EnemyTurn;
+    HandleStates(CurrentState);
 }
 
 void ATBAiGameModeBase::EndTurn()
