@@ -14,7 +14,9 @@ class TBAI_API AUnitBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AUnitBase();
-
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText ActorName;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

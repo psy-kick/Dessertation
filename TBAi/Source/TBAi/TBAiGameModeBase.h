@@ -41,6 +41,10 @@ public:
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
 	UPROPERTY()
 	class USelectionPointer* PointerHUD;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UActionUI> ActionUIClass;
+	UPROPERTY()
+	class UActionUI* ActionUI;
 	APartyBase* SelectedPartyInstance;
 //private functions
 private:

@@ -5,6 +5,7 @@
 #include "PartyBase.h"
 #include "EnemyBase.h"
 #include "SelectionPointer.h"
+#include "ActionUI.h"
 #include "Blueprint/UserWidget.h"
 #include <Kismet/GameplayStatics.h>
 
@@ -14,6 +15,8 @@ ATBAiGameModeBase::ATBAiGameModeBase()
 	CurrentState = ETurnState::StartTurn;
     UClass* SelectionPointerClass = LoadClass<USelectionPointer>(nullptr, TEXT("/Game/Blueprints/UI/Pointer_BP.Pointer_BP_C"));
     PointerHUDClass = SelectionPointerClass;
+    UClass* ActionClass = LoadClass<UActionUI>(nullptr, TEXT("/Game/Blueprints/UI/BP_ActionUI.BP_ActionUI_C"));
+    ActionUIClass = ActionClass;
 }
 void ATBAiGameModeBase::BeginPlay()
 {
@@ -170,9 +173,19 @@ void ATBAiGameModeBase::EnemyTurn()
 
 void ATBAiGameModeBase::WaitTurn()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
+    APartyBase* SelectedParty = UpdateSelection();
+    if (SelectedParty)
+    {
+        if (ActionUIClass)
+        {
+            ActionUI = CreateWidget<UActionUI>(GetWorld(), ActionUIClass);
+            SelectedPartyInstance->WidgetComponent->SetWidgetClass(ActionUIClass);
+            GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
+        }
+    }
+	/*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
     CurrentState = ETurnState::EnemyTurn;
-    HandleStates(CurrentState);
+    HandleStates(CurrentState);*/
 }
 
 void ATBAiGameModeBase::EndTurn()
