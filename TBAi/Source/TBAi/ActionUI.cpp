@@ -5,7 +5,7 @@
 #include "UnitBase.h"
 #include "Components/TextBlock.h"
 
-void UActionUI::SetName(FText UnitsName)
+UTextBlock* UActionUI::SetName(FText UnitsName)
 {
 	if (NameText)
 	{
@@ -15,4 +15,5 @@ void UActionUI::SetName(FText UnitsName)
 			NameText->SetText(UnitsName);
 		}
 	}
+	return NameText;
 }

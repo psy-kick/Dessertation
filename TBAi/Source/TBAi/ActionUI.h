@@ -14,8 +14,9 @@ class TBAI_API UActionUI : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, meta = (Binding))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* NameText;
 	class AUnitBase* UnitName;
-	void SetName(FText UnitsName);
+	UFUNCTION(BlueprintCallable)
+	UTextBlock* SetName(FText UnitsName);
 };

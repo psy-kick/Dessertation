@@ -147,6 +147,7 @@ APartyBase* ATBAiGameModeBase::UpdateSelection()
     {
         SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
     }
+    UE_LOG(LogTemp, Error, TEXT("%s"),*SelectedPartyInstance->GetName());
     return SelectedPartyInstance;
 }
 #pragma endregion
@@ -156,7 +157,7 @@ void ATBAiGameModeBase::PlayerAttack()
     APartyBase* SelectedParty = UpdateSelection();
     if (SelectedParty)
     {
-        SelectedPartyInstance->AttackEnemy();
+        SelectedParty->AttackEnemy();
         CurrentState = ETurnState::WaitTurn;
     }
     else
@@ -179,8 +180,10 @@ void ATBAiGameModeBase::WaitTurn()
         if (ActionUIClass)
         {
             ActionUI = CreateWidget<UActionUI>(GetWorld(), ActionUIClass);
-            SelectedPartyInstance->WidgetComponent->SetWidgetClass(ActionUIClass);
-            GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
+            SelectedParty->WidgetComponent->SetWidgetClass(ActionUIClass);
+            ActionUI->SetName(SelectedParty->ActorName);
+
+            /*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));*/
         }
     }
 	/*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));

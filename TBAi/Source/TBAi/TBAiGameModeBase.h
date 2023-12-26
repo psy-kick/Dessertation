@@ -45,6 +45,7 @@ public:
 	TSubclassOf<class UActionUI> ActionUIClass;
 	UPROPERTY()
 	class UActionUI* ActionUI;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	APartyBase* SelectedPartyInstance;
 //private functions
 private:
@@ -60,7 +61,7 @@ private:
 	void MoveSelectedUp();
 	UFUNCTION()
 	void MoveSelectedDown();
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	APartyBase* UpdateSelection();
 	UFUNCTION()
 	void EnemyTurn();
