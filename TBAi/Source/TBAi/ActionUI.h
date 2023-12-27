@@ -13,10 +13,16 @@ UCLASS()
 class TBAI_API UActionUI : public UUserWidget
 {
 	GENERATED_BODY()
+protected:
+	virtual void NativeConstruct() override;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* NameText;
 	class AUnitBase* UnitName;
 	UFUNCTION(BlueprintCallable)
 	UTextBlock* SetName(FText UnitsName);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* AttackButton;
+	UFUNCTION()
+	void OnButtonClicked();
 };

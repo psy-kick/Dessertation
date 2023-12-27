@@ -180,7 +180,8 @@ void ATBAiGameModeBase::WaitTurn()
         if (ActionUIClass)
         {
             ActionUI = CreateWidget<UActionUI>(GetWorld(), ActionUIClass);
-            SelectedParty->WidgetComponent->SetWidgetClass(ActionUIClass);
+            ActionUI->AddToViewport();
+ /*           SelectedParty->WidgetComponent->SetWidgetClass(ActionUIClass);*/
             ActionUI->SetName(SelectedParty->ActorName);
 
             /*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));*/

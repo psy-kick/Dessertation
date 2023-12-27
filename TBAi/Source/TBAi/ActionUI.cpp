@@ -4,6 +4,15 @@
 #include "ActionUI.h"
 #include "UnitBase.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
+
+void UActionUI::NativeConstruct()
+{
+	if (AttackButton)
+	{
+		AttackButton->OnClicked.AddDynamic(this, &UActionUI::OnButtonClicked);
+	}
+}
 
 UTextBlock* UActionUI::SetName(FText UnitsName)
 {
@@ -16,4 +25,9 @@ UTextBlock* UActionUI::SetName(FText UnitsName)
 		}
 	}
 	return NameText;
+}
+
+void UActionUI::OnButtonClicked()
+{
+	
 }
