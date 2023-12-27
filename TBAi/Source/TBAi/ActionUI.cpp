@@ -5,6 +5,8 @@
 #include "UnitBase.h"
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
+#include "TBAiGameModeBase.h"
+#include "PartyBase.h"
 
 void UActionUI::NativeConstruct()
 {
@@ -29,5 +31,9 @@ UTextBlock* UActionUI::SetName(FText UnitsName)
 
 void UActionUI::OnButtonClicked()
 {
-	
+	GameInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
+	if (GameInstance)
+	{
+		GameInstance->PlayerAttack();
+	}
 }

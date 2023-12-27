@@ -25,4 +25,5 @@ public:
 	class UButton* AttackButton;
 	UFUNCTION()
 	void OnButtonClicked();
+	class ATBAiGameModeBase* GameInstance;
 };

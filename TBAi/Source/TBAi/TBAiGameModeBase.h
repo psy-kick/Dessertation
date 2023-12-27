@@ -29,8 +29,6 @@ public:
 	ATBAiGameModeBase();
 //private variable
 private:
-	UPROPERTY(EditAnywhere, Category = "Tracker")
-	ETurnState CurrentState;
 	UPROPERTY(VisibleAnywhere, Category = "Units")
 	class APartyBase* PartyBase;
 	class AEnemyBase* EnemyBase;
@@ -47,16 +45,14 @@ public:
 	class UActionUI* ActionUI;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	APartyBase* SelectedPartyInstance;
+	UPROPERTY(EditAnywhere, Category = "Tracker")
+	ETurnState CurrentState;
 //private functions
 private:
-	UFUNCTION()
-	void HandleStates(ETurnState NewState);
 	UFUNCTION()
 	void StartTurn();
 	UFUNCTION()
 	void PlayerTurn();
-	UFUNCTION()
-	void PlayerAttack();
 	UFUNCTION()
 	void MoveSelectedUp();
 	UFUNCTION()
@@ -69,6 +65,12 @@ private:
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
+//public functions
+public:
+	UFUNCTION()
+	void HandleStates(ETurnState NewState);
+	UFUNCTION()
+	void PlayerAttack();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

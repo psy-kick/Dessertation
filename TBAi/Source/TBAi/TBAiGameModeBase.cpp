@@ -33,11 +33,11 @@ void ATBAiGameModeBase::HandleStates(ETurnState NewState)
     case ETurnState::PlayerTurn:
         PlayerTurn();
         break;
-    case ETurnState::PlayerAttack:
-        PlayerAttack();
-        break;
     case ETurnState::WaitTurn:
         WaitTurn();
+        break;
+    case ETurnState::PlayerAttack:
+        PlayerAttack();
         break;
     case ETurnState::EnemyTurn:
         EnemyTurn();
@@ -125,7 +125,7 @@ void ATBAiGameModeBase::PlayerTurn()
             }
         }
     }
-    CurrentState = ETurnState::PlayerAttack;
+    CurrentState = ETurnState::WaitTurn;
     HandleStates(CurrentState);
 }
 #pragma region PlayerSelections
@@ -158,14 +158,14 @@ void ATBAiGameModeBase::PlayerAttack()
     if (SelectedParty)
     {
         SelectedParty->AttackEnemy();
-        CurrentState = ETurnState::WaitTurn;
+        CurrentState = ETurnState::EnemyTurn;
+        HandleStates(CurrentState);
     }
     else
     {
         // Handle the case when SelectedPartyInstance is not valid.
         UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance is not valid."));
     }
-    HandleStates(CurrentState);
 }
 void ATBAiGameModeBase::EnemyTurn()
 {
