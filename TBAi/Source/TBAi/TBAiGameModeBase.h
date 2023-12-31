@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Http.h"
 #include "TBAiGameModeBase.generated.h"
-
 /**
  * 
  */
@@ -65,6 +65,8 @@ private:
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
+
+	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 //public functions
 public:
 	UFUNCTION()

@@ -35,6 +35,10 @@ private:
 public:
 	UPROPERTY(EditAnywhere, Category = "Widgets")
 	UWidgetComponent* WidgetComponent;
+	UPROPERTY(EditAnywhere)
+	bool HeavyAttackFlag;
+	UPROPERTY(EditAnywhere)
+	bool LightAttackFlag;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();

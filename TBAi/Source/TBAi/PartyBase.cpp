@@ -51,6 +51,7 @@ void APartyBase::AttackEnemy()
 			if (RandomEnemy)
 			{
 				UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance killed the enemy %s"),*RandomEnemy->GetName());
+
 			}
 		}
 	}

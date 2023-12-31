@@ -7,6 +7,8 @@
 #include "SelectionPointer.h"
 #include "ActionUI.h"
 #include "Blueprint/UserWidget.h"
+#include "HttpModule.h"
+#include "Interfaces/IHttpResponse.h"
 #include <Kismet/GameplayStatics.h>
 
 //constructor
@@ -22,6 +24,9 @@ void ATBAiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
     HandleStates(CurrentState);
+}
+void ATBAiGameModeBase::OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+{
 }
 void ATBAiGameModeBase::HandleStates(ETurnState NewState)
 {

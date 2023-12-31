@@ -21,8 +21,8 @@ public:
 	class AUnitBase* UnitName;
 	UFUNCTION(BlueprintCallable)
 	UTextBlock* SetName(FText UnitsName);
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UButton* AttackButton;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* AttackButton;*/
 	UFUNCTION()
 	void OnButtonClicked();
 	class ATBAiGameModeBase* GameInstance;

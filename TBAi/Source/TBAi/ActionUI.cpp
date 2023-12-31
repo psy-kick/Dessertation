@@ -10,10 +10,10 @@
 
 void UActionUI::NativeConstruct()
 {
-	if (AttackButton)
-	{
-		AttackButton->OnClicked.AddDynamic(this, &UActionUI::OnButtonClicked);
-	}
+	//if (AttackButton)
+	//{
+	//	AttackButton->OnClicked.AddDynamic(this, &UActionUI::OnButtonClicked);
+	//}
 }
 
 UTextBlock* UActionUI::SetName(FText UnitsName)
@@ -31,9 +31,9 @@ UTextBlock* UActionUI::SetName(FText UnitsName)
 
 void UActionUI::OnButtonClicked()
 {
-	GameInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
-	if (GameInstance)
-	{
-		GameInstance->PlayerAttack();
-	}
+	//GameInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
+	//if (GameInstance)
+	//{
+	//	GameInstance->PlayerAttack();
+	//}
 }
