@@ -64,11 +64,11 @@ void APartyBase::AttackEnemy()
 }
 void APartyBase::HeavyAttack()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("HeavyAttack"));
+	UE_LOG(LogTemp, Error, TEXT("HeavyAttack."));
 }
 void APartyBase::LightAttack()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("LightAttack"));
+	UE_LOG(LogTemp, Error, TEXT("LightAttack."));
 }
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()

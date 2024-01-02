@@ -13,7 +13,7 @@ void UAttackVariations::NativeConstruct()
 	{
 		HeavyAttack->OnClicked.AddDynamic(this, &UAttackVariations::OnHeavyButtonClicked);
 	}
-	else if (LightAttack)
+	if (LightAttack)
 	{
 		LightAttack->OnClicked.AddDynamic(this, &UAttackVariations::OnLightButtonClicked);
 	}
@@ -21,10 +21,10 @@ void UAttackVariations::NativeConstruct()
 
 void UAttackVariations::OnHeavyButtonClicked()
 {
-
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
+		GameModeInstance->SelectedPartyInstance->HeavyAttackFlag = true;
 		GameModeInstance->PlayerAttack();
 	}
 }
@@ -34,6 +34,7 @@ void UAttackVariations::OnLightButtonClicked()
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
+		GameModeInstance->SelectedPartyInstance->LightAttackFlag = true;
 		GameModeInstance->PlayerAttack();
 	}
 }
