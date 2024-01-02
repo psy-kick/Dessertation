@@ -13,5 +13,18 @@ UCLASS()
 class TBAI_API UAttackVariations : public UUserWidget
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void NativeConstruct() override;
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* HeavyAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* LightAttack;
+	class APartyBase* PartyBaseInstance;
+	class ATBAiGameModeBase* GameModeInstance;
+private:
+	UFUNCTION()
+	void OnHeavyButtonClicked();
+	UFUNCTION()
+	void OnLightButtonClicked();
 };

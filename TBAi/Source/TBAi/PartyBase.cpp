@@ -50,11 +50,25 @@ void APartyBase::AttackEnemy()
 			AEnemyBase* RandomEnemy = Cast<AEnemyBase>(FoundEnemies[RandomIndex]);
 			if (RandomEnemy)
 			{
-				UE_LOG(LogTemp, Error, TEXT("SelectedPartyInstance killed the enemy %s"),*RandomEnemy->GetName());
-
+				if (HeavyAttackFlag == true)
+				{
+					HeavyAttack();
+				}
+				else if (LightAttackFlag == true)
+				{
+					LightAttack();
+				}
 			}
 		}
 	}
+}
+void APartyBase::HeavyAttack()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("HeavyAttack"));
+}
+void APartyBase::LightAttack()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("LightAttack"));
 }
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()

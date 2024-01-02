@@ -46,6 +46,11 @@ public:
 	void SelectHero();
 	UFUNCTION()
 	void AttackEnemy();
+private:
+	UFUNCTION()
+	void HeavyAttack();
+	UFUNCTION()
+	void LightAttack();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
