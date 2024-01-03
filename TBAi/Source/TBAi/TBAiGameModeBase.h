@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Http.h"
 #include "TBAiGameModeBase.generated.h"
-
 /**
  * 
  */
@@ -29,8 +29,6 @@ public:
 	ATBAiGameModeBase();
 //private variable
 private:
-	UPROPERTY(EditAnywhere, Category = "Tracker")
-	ETurnState CurrentState;
 	UPROPERTY(VisibleAnywhere, Category = "Units")
 	class APartyBase* PartyBase;
 	class AEnemyBase* EnemyBase;
@@ -41,22 +39,25 @@ public:
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
 	UPROPERTY()
 	class USelectionPointer* PointerHUD;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UActionUI> ActionUIClass;
+	UPROPERTY()
+	class UActionUI* ActionUI;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	APartyBase* SelectedPartyInstance;
+	UPROPERTY(EditAnywhere, Category = "Tracker")
+	ETurnState CurrentState;
 //private functions
 private:
-	UFUNCTION()
-	void HandleStates(ETurnState NewState);
 	UFUNCTION()
 	void StartTurn();
 	UFUNCTION()
 	void PlayerTurn();
 	UFUNCTION()
-	void PlayerAttack();
-	UFUNCTION()
 	void MoveSelectedUp();
 	UFUNCTION()
 	void MoveSelectedDown();
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	APartyBase* UpdateSelection();
 	UFUNCTION()
 	void EnemyTurn();
@@ -64,6 +65,14 @@ private:
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
+
+	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+//public functions
+public:
+	UFUNCTION()
+	void HandleStates(ETurnState NewState);
+	UFUNCTION()
+	void PlayerAttack();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -35,6 +35,10 @@ private:
 public:
 	UPROPERTY(EditAnywhere, Category = "Widgets")
 	UWidgetComponent* WidgetComponent;
+	UPROPERTY(EditAnywhere)
+	bool HeavyAttackFlag;
+	UPROPERTY(EditAnywhere)
+	bool LightAttackFlag;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
@@ -42,6 +46,11 @@ public:
 	void SelectHero();
 	UFUNCTION()
 	void AttackEnemy();
+private:
+	UFUNCTION()
+	void HeavyAttack();
+	UFUNCTION()
+	void LightAttack();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
