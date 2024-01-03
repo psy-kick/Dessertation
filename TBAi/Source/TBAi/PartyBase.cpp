@@ -62,13 +62,16 @@ void APartyBase::AttackEnemy()
 		}
 	}
 }
+
 void APartyBase::HeavyAttack()
 {
 	UE_LOG(LogTemp, Error, TEXT("HeavyAttack."));
+	HeavyAttackFlag = false;
 }
 void APartyBase::LightAttack()
 {
 	UE_LOG(LogTemp, Error, TEXT("LightAttack."));
+	LightAttackFlag = false;
 }
 // Called when the game starts or when spawned
 void APartyBase::BeginPlay()

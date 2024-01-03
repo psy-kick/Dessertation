@@ -17,6 +17,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText ActorName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float HP;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
