@@ -122,7 +122,7 @@ void ATBAiGameModeBase::PlayerTurn()
                     SelectedParty->WidgetComponent->SetWidgetClass(PointerHUDClass);
                 }
                 APlayerController* PlayerController = UGameplayStatics::GetPlayerController(World, 0);
-                if (PlayerController)
+                if (PlayerController && isCharSelectable==true)
                 {
                     PlayerController->InputComponent->BindAction("MoveUp", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedUp);
                     PlayerController->InputComponent->BindAction("MoveDown",IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedDown);
@@ -136,11 +136,13 @@ void ATBAiGameModeBase::PlayerTurn()
 #pragma region PlayerSelections
 void ATBAiGameModeBase::MoveSelectedUp()
 {
+    isCharSelectable = true;
     SelectionIndex = (SelectionIndex - 1 + FoundPartyActors.Num()) % FoundPartyActors.Num();
     UpdateSelection();
 }
 void ATBAiGameModeBase::MoveSelectedDown()
 {
+    isCharSelectable = true;
     SelectionIndex = (SelectionIndex + 1) % FoundPartyActors.Num();
     UpdateSelection();
 }
@@ -152,7 +154,6 @@ APartyBase* ATBAiGameModeBase::UpdateSelection()
     {
         SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
     }
-    UE_LOG(LogTemp, Error, TEXT("%s"),*SelectedPartyInstance->GetName());
     return SelectedPartyInstance;
 }
 #pragma endregion
@@ -174,7 +175,30 @@ void ATBAiGameModeBase::PlayerAttack()
 }
 void ATBAiGameModeBase::EnemyTurn()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("EnemyTurn"));
+    if (ActionUI->IsInViewport())
+    {
+        ActionUI->RemoveFromParent();
+    }
+    UWorld* World = GetWorld();
+    if (World)
+    {
+        float TotalPartyHp = 0;
+        UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundPartyActors);
+        for (AActor* party : FoundPartyActors)
+        {
+            APartyBase* PartyInstance = Cast<APartyBase>(party);
+            if (PartyInstance)
+            {
+                TotalPartyHp += PartyInstance->CalculateTotalPartyHP();
+                if (TotalPartyHp > 0)
+                {
+                    CurrentState = ETurnState::PlayerTurn;
+                    HandleStates(CurrentState);
+                }
+            }
+        }
+    }
+    GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("EnemyTurn"));
 }
 
 void ATBAiGameModeBase::WaitTurn()
@@ -186,15 +210,8 @@ void ATBAiGameModeBase::WaitTurn()
         {
             ActionUI = CreateWidget<UActionUI>(GetWorld(), ActionUIClass);
             ActionUI->AddToViewport();
- /*           SelectedParty->WidgetComponent->SetWidgetClass(ActionUIClass);*/
-            ActionUI->SetName(SelectedParty->ActorName);
-
-            /*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));*/
         }
     }
-	/*GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("WaitTurn"));
-    CurrentState = ETurnState::EnemyTurn;
-    HandleStates(CurrentState);*/
 }
 
 void ATBAiGameModeBase::EndTurn()

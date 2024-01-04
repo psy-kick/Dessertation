@@ -47,6 +47,8 @@ public:
 	APartyBase* SelectedPartyInstance;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
 	ETurnState CurrentState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isCharSelectable = true;
 //private functions
 private:
 	UFUNCTION()
@@ -65,7 +67,6 @@ private:
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
-
 	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 //public functions
 public:

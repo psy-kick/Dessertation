@@ -6,14 +6,7 @@
 #include "UnitBase.h"
 #include <Components/WidgetComponent.h>
 #include "PartyBase.generated.h"
-UENUM(BlueprintType)
-enum class EPlayerStates : uint8
-{
-	SelectHero,
-	SelectEnemyOrAlly,
-	Action,
-	FinishTurn
-};
+
 UCLASS()
 class TBAI_API APartyBase : public AUnitBase
 {
@@ -23,13 +16,12 @@ public:
 	// Sets default values for this character's properties
 	APartyBase();
 	int32 TotalPartyMp = 0;
+	int32 TotalPartyHp = 0;
 private:
 	UPROPERTY(EditAnywhere, Category = "Stats")
 	int MP = 0;
 	TArray<AActor*> FoundActors;
 	TArray<AActor*> FoundEnemies;
-	UPROPERTY(EditAnywhere, Category = "Tracker")
-	EPlayerStates CurrentState;
 	UPROPERTY(EditAnywhere)
 	TArray<APartyBase*> PartyList;
 public:
@@ -43,9 +35,11 @@ public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
 	UFUNCTION()
-	void SelectHero();
+	float CalculateTotalPartyHP();
 	UFUNCTION()
 	void AttackEnemy();
+	UFUNCTION()
+	void HealPlayer();
 private:
 	UFUNCTION()
 	void HeavyAttack();
