@@ -5,7 +5,6 @@
 #include "PartyBase.h"
 #include "TBAiGameModeBase.h"
 #include "Components/Button.h"
-#include <Kismet/GameplayStatics.h>
 
 void UAttackVariations::NativeConstruct()
 {
@@ -18,12 +17,12 @@ void UAttackVariations::NativeConstruct()
 		LightAttack->OnClicked.AddDynamic(this, &UAttackVariations::OnLightButtonClicked);
 	}
 }
-
 void UAttackVariations::OnHeavyButtonClicked()
 {
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
+		GameModeInstance->isCharSelectable = false;
 		GameModeInstance->SelectedPartyInstance->HeavyAttackFlag = true;
 		GameModeInstance->PlayerAttack();
 	}
@@ -34,6 +33,7 @@ void UAttackVariations::OnLightButtonClicked()
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
+		GameModeInstance->isCharSelectable = false;
 		GameModeInstance->SelectedPartyInstance->LightAttackFlag = true;
 		GameModeInstance->PlayerAttack();
 	}

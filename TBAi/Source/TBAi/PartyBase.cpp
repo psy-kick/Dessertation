@@ -12,7 +12,6 @@ APartyBase::APartyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CurrentState = EPlayerStates::SelectHero;
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponents"));
 }
 
@@ -33,10 +32,22 @@ int APartyBase::CalculateTotalPartyMP()
 	}
 	return TotalPartyMp;
 }
-
-void APartyBase::SelectHero()
+float APartyBase::CalculateTotalPartyHP()
 {
-	
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		UGameplayStatics::GetAllActorsOfClass(World, APartyBase::StaticClass(), FoundActors);
+		for (AActor* party : FoundActors)
+		{
+			APartyBase* PartyInstance = Cast<APartyBase>(party);
+			if (PartyInstance)
+			{
+				TotalPartyHp += PartyInstance->HP;
+			}
+		}
+	}
+	return TotalPartyHp;
 }
 void APartyBase::AttackEnemy()
 {
@@ -53,14 +64,21 @@ void APartyBase::AttackEnemy()
 				if (HeavyAttackFlag == true)
 				{
 					HeavyAttack();
+					RandomEnemy->HP -= 50;
 				}
 				else if (LightAttackFlag == true)
 				{
 					LightAttack();
+					RandomEnemy->HP -= 40;
 				}
 			}
 		}
 	}
+}
+
+void APartyBase::HealPlayer()
+{
+
 }
 
 void APartyBase::HeavyAttack()
@@ -77,10 +95,6 @@ void APartyBase::LightAttack()
 void APartyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	if (CurrentState == EPlayerStates::SelectHero)
-	{
-		SelectHero();
-	}
 }
 
 // Called every frame

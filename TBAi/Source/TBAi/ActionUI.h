@@ -16,11 +16,6 @@ class TBAI_API UActionUI : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* NameText;
-	class AUnitBase* UnitName;
-	UFUNCTION(BlueprintCallable)
-	UTextBlock* SetName(FText UnitsName);
 	UFUNCTION()
 	void OnButtonClicked();
 	class ATBAiGameModeBase* GameInstance;

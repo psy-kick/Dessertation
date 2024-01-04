@@ -15,20 +15,6 @@ void UActionUI::NativeConstruct()
 	//	AttackButton->OnClicked.AddDynamic(this, &UActionUI::OnButtonClicked);
 	//}
 }
-
-UTextBlock* UActionUI::SetName(FText UnitsName)
-{
-	if (NameText)
-	{
-		if (UnitName)
-		{
-			UnitName->ActorName = UnitsName;
-			NameText->SetText(UnitsName);
-		}
-	}
-	return NameText;
-}
-
 void UActionUI::OnButtonClicked()
 {
 	//GameInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
