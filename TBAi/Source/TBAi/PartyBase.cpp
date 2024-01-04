@@ -65,11 +65,13 @@ void APartyBase::AttackEnemy()
 				{
 					HeavyAttack();
 					RandomEnemy->HP -= 50;
+					RemainingHP = RandomEnemy->HP;
 				}
 				else if (LightAttackFlag == true)
 				{
 					LightAttack();
 					RandomEnemy->HP -= 40;
+					RemainingHP = RandomEnemy->HP;
 				}
 			}
 		}

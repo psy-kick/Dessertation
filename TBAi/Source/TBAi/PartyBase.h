@@ -31,6 +31,8 @@ public:
 	bool HeavyAttackFlag;
 	UPROPERTY(EditAnywhere)
 	bool LightAttackFlag;
+	UPROPERTY(EditAnywhere)
+	float RemainingHP;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
