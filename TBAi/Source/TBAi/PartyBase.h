@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UnitBase.h"
 #include <Components/WidgetComponent.h>
+#include "Http.h"
 #include "PartyBase.generated.h"
 
 UCLASS()
@@ -42,6 +43,10 @@ public:
 	void AttackEnemy();
 	UFUNCTION()
 	void HealPlayer();
+	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	UFUNCTION()
+	void SendRemainingHp();
+	void GetRemainingHp();
 private:
 	UFUNCTION()
 	void HeavyAttack();
