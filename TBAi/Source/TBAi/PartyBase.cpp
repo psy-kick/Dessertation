@@ -7,6 +7,7 @@
 #include "EnemyBase.h"
 #include "HttpModule.h"
 #include "Http.h"
+#include "JsonUtilities.h"
 #include "Interfaces/IHttpResponse.h"
 #include "SelectionPointer.h"
 
@@ -175,28 +176,8 @@ void APartyBase::SendRemainingHp()
 	JsonObject->SetNumberField(TEXT("RemainingHP"), RemainingHP);
 
 	// Set the request payload
-	FString JsonPayload = FString::Printf(TEXT("{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"system\", \"content\": \"Remaining HP: %.2f\"}]}"), RemainingHP);
+	FString JsonPayload = FString::Printf(TEXT("{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"system\", \"content\": \"Remaining HP: %.2f\"},{\"role\": \"system\", \"content\": \"Always state the hp.\"}]}"), RemainingHP);
 	HttpRequest->SetContentAsString(JsonPayload);
-
-	// Bind the callback function
-	HttpRequest->OnProcessRequestComplete().BindUObject(this, &APartyBase::OnHttpRequestComplete);
-
-	// Process the request
-	HttpRequest->ProcessRequest();
-}
-void APartyBase::GetRemainingHp()
-{
-	FString ChatGPTUrl = TEXT("https://api.openai.com/v1/chat/completions");
-	FString ApiKey = TEXT("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");  // Replace with your actual API key
-
-	// Create a URL with parameters
-	FString UrlWithParams = FString::Printf(TEXT("%s?model=%s&messages[0][role]=system&messages[0][content]=You are a helpful assistant&messages[1][role]=system&messages[1][content]=Remaining HP: %.2f"), *ChatGPTUrl, TEXT("gpt-3.5-turbo"), RemainingHP);
-
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
-	HttpRequest->SetURL(UrlWithParams);
-	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
-	HttpRequest->SetHeader(TEXT("Authorization"), FString::Printf(TEXT("Bearer %s"), *ApiKey));
-	HttpRequest->SetVerb(TEXT("GET"));
 
 	// Bind the callback function
 	HttpRequest->OnProcessRequestComplete().BindUObject(this, &APartyBase::OnHttpRequestComplete);
