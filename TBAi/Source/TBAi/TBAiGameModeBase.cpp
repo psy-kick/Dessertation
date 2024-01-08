@@ -6,6 +6,8 @@
 #include "EnemyBase.h"
 #include "SelectionPointer.h"
 #include "ActionUI.h"
+#include "VictoryWidget.h"
+#include "LossWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
@@ -22,6 +24,10 @@ ATBAiGameModeBase::ATBAiGameModeBase()
     PointerHUDClass = SelectionPointerClass;
     UClass* ActionClass = LoadClass<UActionUI>(nullptr, TEXT("/Game/Blueprints/UI/BP_ActionUI.BP_ActionUI_C"));
     ActionUIClass = ActionClass;
+    UClass* VictoryClass = LoadClass<UVictoryWidget>(nullptr, TEXT("/Game/Blueprints/UI/BP_VictoryUI.BP_VictoryUI_C"));
+    VictoryUIClass = VictoryClass;
+    UClass* LossClass = LoadClass<UVictoryWidget>(nullptr, TEXT("/Game/Blueprints/UI/BP_LossUI.BP_LossUI_C"));
+    LossUIClass = LossClass;
 }
 void ATBAiGameModeBase::BeginPlay()
 {
@@ -384,14 +390,20 @@ void ATBAiGameModeBase::WaitTurn()
 void ATBAiGameModeBase::Won()
 {
     UE_LOG(LogTemp, Error, TEXT("Won"));
+    if (VictoryUIClass)
+    {
+        VictoryUI = CreateWidget<UVictoryWidget>(GetWorld(), VictoryUIClass);
+        VictoryUI->AddToViewport();
+    }
 }
 
 void ATBAiGameModeBase::Lost()
 {
     UE_LOG(LogTemp, Error, TEXT("Lost"));
-}
-
-void ATBAiGameModeBase::EndTurn()
-{
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("EndTurn"));
+    if (LossUIClass)
+    {
+        UE_LOG(LogTemp, Error, TEXT("LostUI"));
+        LossUI = CreateWidget<ULossWidget>(GetWorld(), LossUIClass);
+        LossUI->AddToViewport();
+    }
 }
