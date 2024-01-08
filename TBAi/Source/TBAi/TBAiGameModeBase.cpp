@@ -138,7 +138,7 @@ void ATBAiGameModeBase::PlayerTurn()
                 {
                     if (ActionUI->IsInViewport())
                     {
-                        ActionUI->RemoveFromViewport();
+                        ActionUI->Destruct();
                     }
                 }
             }
@@ -173,14 +173,34 @@ void ATBAiGameModeBase::MoveSelectedDown()
 }
 APartyBase* ATBAiGameModeBase::UpdateSelection()
 {
-    SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
-
-    if (SelectedPartyInstance)
+    // Check if FoundPartyActors is not empty
+    if (FoundPartyActors.Num() > 0)
     {
-        SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
+        SelectedPartyInstance = Cast<APartyBase>(FoundPartyActors[SelectionIndex]);
+
+        // Check if the selected party is valid
+        if (SelectedPartyInstance && SelectedPartyInstance->IsValidLowLevelFast())
+        {
+            SelectedPartyInstance->WidgetComponent->SetWidgetClass(PointerHUDClass);
+        }
+        else
+        {
+            // Handle the case when the selected party is not valid
+            CurrentState = ETurnState::Lost;
+            HandleStates(CurrentState);
+        }
     }
+    else
+    {
+        // Handle the case when FoundPartyActors is empty
+        UE_LOG(LogTemp, Warning, TEXT("FoundPartyActors is empty in UpdateSelection."));
+        CurrentState = ETurnState::Lost;
+        HandleStates(CurrentState);
+    }
+
     return SelectedPartyInstance;
 }
+
 #pragma endregion
 
 void ATBAiGameModeBase::PlayerAttack()
@@ -197,6 +217,18 @@ void ATBAiGameModeBase::PlayerAttack()
         else
         {
             SelectedParty->Destroy();
+            SelectedParty = nullptr;
+            if (GetTotalPartyHp() > 0)
+            {
+                CurrentState = ETurnState::PlayerTurn;
+                HandleStates(CurrentState);
+            }
+            else
+            {
+                CurrentState = ETurnState::Lost;
+                HandleStates(CurrentState);
+            }
+
         }
     }
     else
@@ -249,48 +281,56 @@ void ATBAiGameModeBase::EnemyTurn()
     {
         ActionUI->RemoveFromParent();
     }
-    if (GetTotalEnemyHp() > 0)
+    if (FoundPartyActors.Num() > 0)
     {
-        UWorld* World = GetWorld();
-        if (World)
+        if (GetTotalEnemyHp() > 0)
         {
-            UGameplayStatics::GetAllActorsOfClass(World, AEnemyBase::StaticClass(), FoundEnemyActors);
-            if (FoundEnemyActors.Num() > 0)
+            UWorld* World = GetWorld();
+            if (World)
             {
-                int32 RandomIndex = FMath::RandRange(0, FoundEnemyActors.Num() - 1);
-                AEnemyBase* RandomEnemy = Cast<AEnemyBase>(FoundEnemyActors[RandomIndex]);
-                if (RandomEnemy)
+                UGameplayStatics::GetAllActorsOfClass(World, AEnemyBase::StaticClass(), FoundEnemyActors);
+                if (FoundEnemyActors.Num() > 0)
                 {
-                    if (RandomEnemy->HP > 0)
+                    int32 RandomIndex = FMath::RandRange(0, FoundEnemyActors.Num() - 1);
+                    AEnemyBase* RandomEnemy = Cast<AEnemyBase>(FoundEnemyActors[RandomIndex]);
+                    if (RandomEnemy)
                     {
-                        RandomEnemy->EnemyAttack();
-                    }
-                    else
-                    {
-                        RandomEnemy->Destroy();
+                        if (RandomEnemy->HP > 0)
+                        {
+                            RandomEnemy->EnemyAttack();
+                        }
+                        else
+                        {
+                            RandomEnemy->Destroy();
+                        }
                     }
                 }
+                else
+                {
+                    CurrentState = ETurnState::Won;
+                    HandleStates(CurrentState);
+                }
+            }
+            if (GetTotalPartyHp() > 0)
+            {
+                CurrentState = ETurnState::PlayerTurn;
+                HandleStates(CurrentState);
             }
             else
             {
-                CurrentState = ETurnState::Won;
+                CurrentState = ETurnState::Lost;
                 HandleStates(CurrentState);
             }
         }
-        if (GetTotalPartyHp() > 0)
-        {
-            CurrentState = ETurnState::PlayerTurn;
-            HandleStates(CurrentState);
-        }
         else
         {
+
             CurrentState = ETurnState::Lost;
             HandleStates(CurrentState);
         }
     }
     else
     {
-
         CurrentState = ETurnState::Lost;
         HandleStates(CurrentState);
     }
@@ -299,13 +339,18 @@ void ATBAiGameModeBase::EnemyTurn()
 void ATBAiGameModeBase::WaitTurn()
 {
     APartyBase* SelectedParty = UpdateSelection();
-    if (SelectedParty)
+    if (SelectedParty && SelectedParty->IsValidLowLevelFast())
     {
         if (ActionUIClass)
         {
             ActionUI = CreateWidget<UActionUI>(GetWorld(), ActionUIClass);
             ActionUI->AddToViewport();
         }
+    }
+    else
+    {
+        CurrentState = ETurnState::Lost;
+        HandleStates(CurrentState);
     }
 }
 
@@ -316,7 +361,6 @@ void ATBAiGameModeBase::Won()
 
 void ATBAiGameModeBase::Lost()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Lost"));
     UE_LOG(LogTemp, Error, TEXT("Lost"));
 }
 
