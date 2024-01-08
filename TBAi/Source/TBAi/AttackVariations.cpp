@@ -22,9 +22,17 @@ void UAttackVariations::OnHeavyButtonClicked()
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
-		GameModeInstance->isCharSelectable = false;
-		GameModeInstance->SelectedPartyInstance->HeavyAttackFlag = true;
-		GameModeInstance->PlayerAttack();
+		if (GameModeInstance->GetTotalEnemyHp() > 0)
+		{
+			GameModeInstance->isCharSelectable = false;
+			GameModeInstance->SelectedPartyInstance->HeavyAttackFlag = true;
+			GameModeInstance->PlayerAttack();
+		}
+		else if (GameModeInstance->GetTotalEnemyHp() <= 0)
+		{
+			UE_LOG(LogTemp, Error, TEXT("else if Lost"));
+			GameModeInstance->Lost();
+		}
 	}
 }
 
@@ -33,8 +41,16 @@ void UAttackVariations::OnLightButtonClicked()
 	GameModeInstance = GetWorld()->GetAuthGameMode<ATBAiGameModeBase>();
 	if (GameModeInstance)
 	{
-		GameModeInstance->isCharSelectable = false;
-		GameModeInstance->SelectedPartyInstance->LightAttackFlag = true;
-		GameModeInstance->PlayerAttack();
+		if (GameModeInstance->GetTotalEnemyHp() > 0)
+		{
+			GameModeInstance->isCharSelectable = false;
+			GameModeInstance->SelectedPartyInstance->LightAttackFlag = true;
+			GameModeInstance->PlayerAttack();
+		}
+		else
+		{
+			GameModeInstance->Lost();
+		}
+		
 	}
 }

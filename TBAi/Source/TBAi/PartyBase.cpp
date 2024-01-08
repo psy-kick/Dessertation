@@ -69,14 +69,14 @@ void APartyBase::AttackEnemy()
 				{
 					HeavyAttack();
 					RandomEnemy->HP -= 50;
-					RemainingHP = RandomEnemy->HP;
+					RemainingEnemyHP = RandomEnemy->HP;
 					SendRemainingHp();
 				}
 				else if (LightAttackFlag == true)
 				{
 					LightAttack();
 					RandomEnemy->HP -= 40;
-					RemainingHP = RandomEnemy->HP;
+					RemainingEnemyHP = RandomEnemy->HP;
 					SendRemainingHp();
 				}
 			}
@@ -173,10 +173,10 @@ void APartyBase::SendRemainingHp()
 
 	// Create a JSON object with RemainingHP
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-	JsonObject->SetNumberField(TEXT("RemainingHP"), RemainingHP);
+	JsonObject->SetNumberField(TEXT("RemainingHP"), RemainingEnemyHP);
 
 	// Set the request payload
-	FString JsonPayload = FString::Printf(TEXT("{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"system\", \"content\": \"Remaining HP: %.2f\"},{\"role\": \"system\", \"content\": \"Always state the hp.\"}]}"), RemainingHP);
+	FString JsonPayload = FString::Printf(TEXT("{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a helpful assistant.\"}, {\"role\": \"system\", \"content\": \"Remaining HP: %.2f\"},{\"role\": \"system\", \"content\": \"Always state the hp.\"}]}"), RemainingEnemyHP);
 	HttpRequest->SetContentAsString(JsonPayload);
 
 	// Bind the callback function
