@@ -34,6 +34,9 @@ private:
 	class AEnemyBase* EnemyBase;
 	int32 SelectionIndex;
 	TArray<AActor*> FoundPartyActors;
+	TArray<AActor*> FoundEnemyActors;
+	float TotalPartyHp = 0;
+	float TotalEnemyHp = 0;
 public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
@@ -67,13 +70,20 @@ private:
 	void WaitTurn();
 	UFUNCTION()
 	void EndTurn();
-	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 //public functions
 public:
 	UFUNCTION()
 	void HandleStates(ETurnState NewState);
 	UFUNCTION()
 	void PlayerAttack();
+	UFUNCTION()
+	int GetTotalPartyHp();
+	UFUNCTION()
+	int GetTotalEnemyHp();
+	UFUNCTION()
+	void Lost();
+	UFUNCTION()
+	void Won();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

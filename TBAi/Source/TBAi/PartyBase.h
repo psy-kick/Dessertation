@@ -33,7 +33,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool LightAttackFlag;
 	UPROPERTY(EditAnywhere)
-	float RemainingHP;
+	float RemainingEnemyHP;
 public:
 	UFUNCTION()
 	int CalculateTotalPartyMP();
@@ -46,7 +46,6 @@ public:
 	void OnHttpRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 	UFUNCTION()
 	void SendRemainingHp();
-	void GetRemainingHp();
 private:
 	UFUNCTION()
 	void HeavyAttack();
