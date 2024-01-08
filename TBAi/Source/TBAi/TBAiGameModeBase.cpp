@@ -9,6 +9,9 @@
 #include "Blueprint/UserWidget.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
+#include "HPWidget.h"
+#include "Components/ProgressBar.h"
+#include "Components/WidgetComponent.h"
 #include <Kismet/GameplayStatics.h>
 
 //constructor
@@ -203,6 +206,7 @@ APartyBase* ATBAiGameModeBase::UpdateSelection()
 
 #pragma endregion
 
+
 void ATBAiGameModeBase::PlayerAttack()
 {
     APartyBase* SelectedParty = UpdateSelection();
@@ -211,6 +215,18 @@ void ATBAiGameModeBase::PlayerAttack()
         if (SelectedParty->HP > 0)
         {
             SelectedParty->AttackEnemy();
+            UUserWidget* HealthWidgetInstance = Cast<UUserWidget>(SelectedParty->HealthWidgetComponent->GetUserWidgetObject());
+
+            if (HealthWidgetInstance)
+            {
+                // Assuming the widget class has a HealthBar property
+                UProgressBar* HealthBar = Cast<UProgressBar>(HealthWidgetInstance->GetWidgetFromName(TEXT("HealthBar")));
+                if (HealthBar)
+                {
+                    // Update health bar percentage
+                    HealthBar->SetPercent(SelectedParty->HP / MaxHp);
+                }
+            }
             CurrentState = ETurnState::EnemyTurn;
             HandleStates(CurrentState);
         }
@@ -298,6 +314,17 @@ void ATBAiGameModeBase::EnemyTurn()
                         if (RandomEnemy->HP > 0)
                         {
                             RandomEnemy->EnemyAttack();
+                            UUserWidget* HealthWidgetInstance = Cast<UUserWidget>(RandomEnemy->HealthWidgetComponent->GetUserWidgetObject());
+                            if (HealthWidgetInstance)
+                            {
+                                // Assuming the widget class has a HealthBar property
+                                UProgressBar* HealthBar = Cast<UProgressBar>(HealthWidgetInstance->GetWidgetFromName(TEXT("HealthBar")));
+                                if (HealthBar)
+                                {
+                                    // Update health bar percentage
+                                    HealthBar->SetPercent(RandomEnemy->HP / MaxHp);
+                                }
+                            }
                         }
                         else
                         {

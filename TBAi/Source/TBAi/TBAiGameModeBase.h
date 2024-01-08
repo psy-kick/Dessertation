@@ -37,6 +37,7 @@ private:
 	TArray<AActor*> FoundEnemyActors;
 	float TotalPartyHp = 0;
 	float TotalEnemyHp = 0;
+	float MaxHp = 100;
 public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class USelectionPointer> PointerHUDClass;
@@ -46,12 +47,16 @@ public:
 	TSubclassOf<class UActionUI> ActionUIClass;
 	UPROPERTY()
 	class UActionUI* ActionUI;
+	TSubclassOf<class UHPWidget> HPUIClass;
+	UPROPERTY()
+	class UHPWidget* HPUI;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	APartyBase* SelectedPartyInstance;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
 	ETurnState CurrentState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isCharSelectable = true;
+	TSubclassOf<UUserWidget> UnitHPWIdget;
 //private functions
 private:
 	UFUNCTION()
