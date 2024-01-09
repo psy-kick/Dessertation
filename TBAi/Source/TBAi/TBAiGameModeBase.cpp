@@ -19,6 +19,7 @@
 //constructor
 ATBAiGameModeBase::ATBAiGameModeBase()
 {
+    PlayerControllerClass = APlayerController::StaticClass();
 	CurrentState = ETurnState::StartTurn;
     UClass* SelectionPointerClass = LoadClass<USelectionPointer>(nullptr, TEXT("/Game/Blueprints/UI/Pointer_BP.Pointer_BP_C"));
     PointerHUDClass = SelectionPointerClass;
@@ -32,6 +33,17 @@ ATBAiGameModeBase::ATBAiGameModeBase()
 void ATBAiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+    APlayerController* LocalPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+    if (LocalPlayerController)
+    {
+        FInputModeUIOnly InputMode;
+        InputMode.SetWidgetToFocus(nullptr);
+        InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+        LocalPlayerController->SetInputMode(InputMode);
+        LocalPlayerController->bShowMouseCursor = true;
+    }
     HandleStates(CurrentState);
 }
 
