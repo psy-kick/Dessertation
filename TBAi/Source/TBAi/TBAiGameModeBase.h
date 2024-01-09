@@ -72,9 +72,9 @@ private:
 	UFUNCTION(BlueprintCallable)
 	APartyBase* UpdateSelection();
 	UFUNCTION()
-	void WaitTurn();
+	void EnemyTurn();
 	UFUNCTION()
-	void EndTurn();
+	void WaitTurn();
 //public functions
 public:
 	UFUNCTION()
