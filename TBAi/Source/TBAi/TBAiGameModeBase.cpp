@@ -19,6 +19,7 @@
 //constructor
 ATBAiGameModeBase::ATBAiGameModeBase()
 {
+    PlayerControllerClass = APlayerController::StaticClass();
 	CurrentState = ETurnState::StartTurn;
     UClass* SelectionPointerClass = LoadClass<USelectionPointer>(nullptr, TEXT("/Game/Blueprints/UI/Pointer_BP.Pointer_BP_C"));
     PointerHUDClass = SelectionPointerClass;
@@ -32,6 +33,17 @@ ATBAiGameModeBase::ATBAiGameModeBase()
 void ATBAiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+    APlayerController* LocalPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+    if (LocalPlayerController)
+    {
+        FInputModeGameAndUI InputMode;
+        InputMode.SetWidgetToFocus(nullptr);
+        InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+        LocalPlayerController->SetInputMode(InputMode);
+        LocalPlayerController->bShowMouseCursor = true;
+    }
     HandleStates(CurrentState);
 }
 
@@ -136,11 +148,16 @@ void ATBAiGameModeBase::PlayerTurn()
                         PointerHUD = CreateWidget<USelectionPointer>(World, PointerHUDClass);
                         SelectedParty->WidgetComponent->SetWidgetClass(PointerHUDClass);
                     }
-                    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(World, 0);
+                    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
                     if (PlayerController && isCharSelectable == true)
                     {
+                        PlayerController->InputComponent->ClearActionBindings();
                         PlayerController->InputComponent->BindAction("MoveUp", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedUp);
                         PlayerController->InputComponent->BindAction("MoveDown", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedDown);
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("PlayerController is null or isCharSelectable is false."));
                     }
                 }
                 else if (SelectedParty == NULL)
