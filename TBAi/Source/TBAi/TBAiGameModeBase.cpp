@@ -37,7 +37,7 @@ void ATBAiGameModeBase::BeginPlay()
 
     if (LocalPlayerController)
     {
-        FInputModeUIOnly InputMode;
+        FInputModeGameAndUI InputMode;
         InputMode.SetWidgetToFocus(nullptr);
         InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 
@@ -148,11 +148,16 @@ void ATBAiGameModeBase::PlayerTurn()
                         PointerHUD = CreateWidget<USelectionPointer>(World, PointerHUDClass);
                         SelectedParty->WidgetComponent->SetWidgetClass(PointerHUDClass);
                     }
-                    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(World, 0);
+                    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
                     if (PlayerController && isCharSelectable == true)
                     {
+                        PlayerController->InputComponent->ClearActionBindings();
                         PlayerController->InputComponent->BindAction("MoveUp", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedUp);
                         PlayerController->InputComponent->BindAction("MoveDown", IE_Pressed, this, &ATBAiGameModeBase::MoveSelectedDown);
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("PlayerController is null or isCharSelectable is false."));
                     }
                 }
                 else if (SelectedParty == NULL)
