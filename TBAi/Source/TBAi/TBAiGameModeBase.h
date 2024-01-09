@@ -50,6 +50,7 @@ public:
 	TSubclassOf<class UVictoryWidget> VictoryUIClass;
 	UPROPERTY()
 	class UVictoryWidget* VictoryUI;
+	UPROPERTY()
 	TSubclassOf<class ULossWidget> LossUIClass;
 	UPROPERTY()
 	class ULossWidget* LossUI;

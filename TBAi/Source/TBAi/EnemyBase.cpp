@@ -109,7 +109,7 @@ void AEnemyBase::LightAttack()
 void AEnemyBase::SendRemainingHp()
 {
 	FString ChatGPTUrl = TEXT("https://api.openai.com/v1/chat/completions");
-	FString ApiKey = TEXT("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");  // Replace with your actual API key
+	FString ApiKey = TEXT("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");  // Replace with your actual API key
 
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetURL(ChatGPTUrl);
