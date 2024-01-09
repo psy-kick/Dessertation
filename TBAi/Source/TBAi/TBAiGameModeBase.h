@@ -47,16 +47,18 @@ public:
 	TSubclassOf<class UActionUI> ActionUIClass;
 	UPROPERTY()
 	class UActionUI* ActionUI;
-	TSubclassOf<class UHPWidget> HPUIClass;
+	TSubclassOf<class UVictoryWidget> VictoryUIClass;
 	UPROPERTY()
-	class UHPWidget* HPUI;
+	class UVictoryWidget* VictoryUI;
+	TSubclassOf<class ULossWidget> LossUIClass;
+	UPROPERTY()
+	class ULossWidget* LossUI;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	APartyBase* SelectedPartyInstance;
 	UPROPERTY(EditAnywhere, Category = "Tracker")
 	ETurnState CurrentState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isCharSelectable = true;
-	TSubclassOf<UUserWidget> UnitHPWIdget;
 //private functions
 private:
 	UFUNCTION()
@@ -73,8 +75,6 @@ private:
 	void EnemyTurn();
 	UFUNCTION()
 	void WaitTurn();
-	UFUNCTION()
-	void EndTurn();
 //public functions
 public:
 	UFUNCTION()
