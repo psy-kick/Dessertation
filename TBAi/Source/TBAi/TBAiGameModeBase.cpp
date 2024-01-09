@@ -27,7 +27,7 @@ ATBAiGameModeBase::ATBAiGameModeBase()
     ActionUIClass = ActionClass;
     UClass* VictoryClass = LoadClass<UVictoryWidget>(nullptr, TEXT("/Game/Blueprints/UI/BP_VictoryUI.BP_VictoryUI_C"));
     VictoryUIClass = VictoryClass;
-    UClass* LossClass = LoadClass<UVictoryWidget>(nullptr, TEXT("/Game/Blueprints/UI/BP_LossUI.BP_LossUI_C"));
+    UClass* LossClass = LoadClass<ULossWidget>(nullptr, TEXT("/Game/Blueprints/UI/BP_LossUI.BP_LossUI_C"));
     LossUIClass = LossClass;
 }
 void ATBAiGameModeBase::BeginPlay()
